@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module MGDialogs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>MGDialogs</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:e%3A%5Cmgutils%5C2018-12-20-mgutils%5Cmgdialogs.py">e:\mgutils\2018-12-20-mgutils\mgdialogs.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;Copyright&nbsp;@&nbsp;2018&nbsp;Michael&nbsp;George<br>
+#<br>
+#&nbsp;some&nbsp;examples&nbsp;of&nbsp;putting&nbsp;simple&nbsp;controls&nbsp;on&nbsp;a&nbsp;main&nbsp;window,&nbsp;popup&nbsp;from&nbsp;a&nbsp;button&nbsp;click<br>
+#&nbsp;also&nbsp;pops&nbsp;up&nbsp;an&nbsp;About&nbsp;Box&nbsp;dialog<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;Python&nbsp;Compability:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Developed&nbsp;on&nbsp;IDLE@Python&nbsp;3.7.1.<br>
+#&nbsp;&nbsp;&nbsp;Platform&nbsp;Compatibilty:&nbsp;&nbsp;recent&nbsp;testing&nbsp;on&nbsp;MacOS,&nbsp;Win10<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;mg&nbsp;2018-12-21&nbsp;initial&nbsp;upload&nbsp;to&nbsp;git<br>
+#</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="tkinter.filedialog.html">tkinter.filedialog</a><br>
+</td><td width="25%" valign=top><a href="tkinter.html">tkinter</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="MGDialogs.html#AboutDialog">AboutDialog</a>
+</font></dt><dt><font face="helvetica, arial"><a href="MGDialogs.html#MyDialog">MyDialog</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="AboutDialog">class <strong>AboutDialog</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#AboutDialog">AboutDialog</a>(parent)<br>
+&nbsp;<br>
+#&nbsp;basic&nbsp;aboutdialog&nbsp;exits&nbsp;on&nbsp;click&nbsp;of&nbsp;OK<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="AboutDialog-__init__"><strong>__init__</strong></a>(self, parent)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="AboutDialog-onClick"><strong>onClick</strong></a>(self)</dt><dd><tt>#&nbsp;&nbsp;dialog&nbsp;OK&nbsp;button&nbsp;click;&nbsp;closes&nbsp;the&nbsp;<a href="#AboutDialog">AboutDialog</a>&nbsp;window</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="MyDialog">class <strong>MyDialog</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#MyDialog">MyDialog</a>(parent)<br>
+&nbsp;<br>
+#&nbsp;test&nbsp;dialog&nbsp;example<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="MyDialog-__init__"><strong>__init__</strong></a>(self, parent)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="MyDialog-browsefilebuttonservice"><strong>browsefilebuttonservice</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="MyDialog-oncancel"><strong>oncancel</strong></a>(self)</dt><dd><tt>#&nbsp;closed&nbsp;<a href="#MyDialog">MyDialog</a>&nbsp;window</tt></dd></dl>
+
+<dl><dt><a name="MyDialog-onok"><strong>onok</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="MyDialog-send"><strong>send</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="MyDialog-update"><strong>update</strong></a>(self, msg)</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-centerinwindow"><strong>centerinwindow</strong></a>(mywindow, wid, ht)</dt><dd><tt>#&nbsp;helper&nbsp;function&nbsp;to&nbsp;center&nbsp;and&nbsp;size&nbsp;a&nbsp;window</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>DISABLED</strong> = 'disabled'<br>
+<strong>E</strong> = 'e'<br>
+<strong>END</strong> = 'end'<br>
+<strong>LEFT</strong> = 'left'<br>
+<strong>NORMAL</strong> = 'normal'<br>
+<strong>RIGHT</strong> = 'right'<br>
+<strong>W</strong> = 'w'<br>
+<strong>Y</strong> = 'y'</td></tr></table>
+</body></html>

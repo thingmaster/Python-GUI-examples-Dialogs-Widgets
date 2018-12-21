@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module MGwidgets</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>MGwidgets</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:e%3A%5Cmgutils%5C2018-12-20-mgutils%5Cmgwidgets.py">e:\mgutils\2018-12-20-mgutils\mgwidgets.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;Copyright&nbsp;@&nbsp;2018&nbsp;Michael&nbsp;George<br>
+#<br>
+#&nbsp;MGwidgets&nbsp;implements&nbsp;some&nbsp;basic&nbsp;widget&nbsp;classes&nbsp;for&nbsp;reuse<br>
+#&nbsp;revisions:<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;2018-12-06&nbsp;mg&nbsp;initial&nbsp;version&nbsp;with&nbsp;main&nbsp;menu&nbsp;and&nbsp;a&nbsp;combo&nbsp;button&nbsp;with&nbsp;list&nbsp;of&nbsp;checkboxes<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;2018-12-20&nbsp;add&nbsp;the&nbsp;file&nbsp;menu.&nbsp;add&nbsp;the&nbsp;help&nbsp;menu.&nbsp;<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remove&nbsp;local&nbsp;state&nbsp;vars&nbsp;from&nbsp;these&nbsp;widgets,&nbsp;use&nbsp;keyval&nbsp;pairs&nbsp;provided&nbsp;by&nbsp;caller&nbsp;to&nbsp;store&nbsp;menu&nbsp;&amp;&nbsp;gui&nbsp;state&nbsp;values<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;added&nbsp;binding&nbsp;example&nbsp;for&nbsp;widgets&nbsp;Enter&nbsp;Leave&nbsp;&amp;&nbsp;flyover&nbsp;callback&nbsp;argument&nbsp;in&nbsp;the&nbsp;class<br>
+#</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="tkinter.filedialog.html">tkinter.filedialog</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="MGwidgets.html#MGcheckboxes">MGcheckboxes</a>
+</font></dt><dt><font face="helvetica, arial"><a href="MGwidgets.html#MGradiogroup">MGradiogroup</a>
+</font></dt><dt><font face="helvetica, arial"><a href="MGwidgets.html#mgcombocheckboxes">mgcombocheckboxes</a>
+</font></dt><dt><font face="helvetica, arial"><a href="MGwidgets.html#mgmainmenu">mgmainmenu</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="MGcheckboxes">class <strong>MGcheckboxes</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#MGcheckboxes">MGcheckboxes</a>(parentwin,&nbsp;kvgrouppairs,&nbsp;flyoverfn)<br>
+&nbsp;<br>
+#&nbsp;mg&nbsp;class&nbsp;for&nbsp;managing&nbsp;all&nbsp;the&nbsp;checkboxes&nbsp;in&nbsp;a&nbsp;window<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="MGcheckboxes-MGcheck_fn"><strong>MGcheck_fn</strong></a>(self)</dt><dd><tt>#&nbsp;callback&nbsp;on&nbsp;clicks&nbsp;to&nbsp;show&nbsp;the&nbsp;state&nbsp;of&nbsp;the&nbsp;two&nbsp;radio&nbsp;groups.&nbsp;don't&nbsp;really&nbsp;need&nbsp;this&nbsp;for&nbsp;app&nbsp;but&nbsp;it's&nbsp;a&nbsp;good&nbsp;tutorial&nbsp;helper</tt></dd></dl>
+
+<dl><dt><a name="MGcheckboxes-MGradio_get"><strong>MGradio_get</strong></a>(self)</dt><dd><tt>#&nbsp;anyone&nbsp;with&nbsp;the&nbsp;instance&nbsp;can&nbsp;get&nbsp;the&nbsp;state&nbsp;of&nbsp;the&nbsp;two&nbsp;radio&nbsp;groups.&nbsp;don't&nbsp;really&nbsp;need&nbsp;this&nbsp;either&nbsp;except&nbsp;for&nbsp;tutorial&nbsp;app.<br>
+#&nbsp;in&nbsp;a&nbsp;real&nbsp;application,&nbsp;the&nbsp;instantiating&nbsp;caller&nbsp;provides&nbsp;these&nbsp;menu-associated&nbsp;variables&nbsp;so&nbsp;THEY&nbsp;RESIDE&nbsp;IN&nbsp;THE&nbsp;CALLER'S&nbsp;CONTEXT&nbsp;-&nbsp;caller&nbsp;can&nbsp;access&nbsp;directly</tt></dd></dl>
+
+<dl><dt><a name="MGcheckboxes-__init__"><strong>__init__</strong></a>(self, parentwin, kvgrouppairs, flyoverfn)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="MGradiogroup">class <strong>MGradiogroup</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#MGradiogroup">MGradiogroup</a>(parentwin,&nbsp;kvgrouppairs,&nbsp;flyoverfn)<br>
+&nbsp;<br>
+#&nbsp;MG&nbsp;class&nbsp;for&nbsp;managing&nbsp;all&nbsp;the&nbsp;radio&nbsp;groups&nbsp;in&nbsp;a&nbsp;window<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="MGradiogroup-MGradiogroup_fn"><strong>MGradiogroup_fn</strong></a>(self)</dt><dd><tt>#&nbsp;callback&nbsp;on&nbsp;clicks&nbsp;to&nbsp;show&nbsp;the&nbsp;state&nbsp;of&nbsp;the&nbsp;two&nbsp;radio&nbsp;groups.&nbsp;don't&nbsp;really&nbsp;need&nbsp;this&nbsp;for&nbsp;app&nbsp;but&nbsp;it's&nbsp;a&nbsp;good&nbsp;tutorial&nbsp;helper</tt></dd></dl>
+
+<dl><dt><a name="MGradiogroup-MGradiogroup_get"><strong>MGradiogroup_get</strong></a>(self)</dt><dd><tt>#&nbsp;anyone&nbsp;with&nbsp;the&nbsp;instance&nbsp;can&nbsp;get&nbsp;the&nbsp;state&nbsp;of&nbsp;the&nbsp;two&nbsp;radio&nbsp;groups.&nbsp;don't&nbsp;really&nbsp;need&nbsp;this&nbsp;either&nbsp;except&nbsp;for&nbsp;tutorial&nbsp;app.<br>
+#&nbsp;in&nbsp;a&nbsp;real&nbsp;application,&nbsp;the&nbsp;instantiating&nbsp;caller&nbsp;provides&nbsp;these&nbsp;menu-associated&nbsp;variables&nbsp;so&nbsp;THEY&nbsp;RESIDE&nbsp;IN&nbsp;THE&nbsp;CALLER'S&nbsp;CONTEXT&nbsp;-&nbsp;caller&nbsp;can&nbsp;access&nbsp;directly</tt></dd></dl>
+
+<dl><dt><a name="MGradiogroup-__init__"><strong>__init__</strong></a>(self, parentwin, kvgrouppairs, flyoverfn)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="mgcombocheckboxes">class <strong>mgcombocheckboxes</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#mgcombocheckboxes">mgcombocheckboxes</a>(topwin,&nbsp;itemkeyval)<br>
+&nbsp;<br>
+#&nbsp;an&nbsp;MG&nbsp;Class&nbsp;for&nbsp;creating&nbsp;&amp;&nbsp;interacting&nbsp;with&nbsp;a&nbsp;button&nbsp;that&nbsp;has&nbsp;check&nbsp;items<br>
+#&nbsp;&nbsp;includes&nbsp;a&nbsp;_get&nbsp;function&nbsp;returning&nbsp;keyvalue&nbsp;pairs&nbsp;for&nbsp;all&nbsp;check&nbsp;items'&nbsp;states<br>
+#&nbsp;&nbsp;includes&nbsp;an&nbsp;_add&nbsp;method&nbsp;adding&nbsp;the&nbsp;item&nbsp;you&nbsp;request&nbsp;(note&nbsp;if&nbsp;it's&nbsp;not&nbsp;unique&nbsp;you&nbsp;only&nbsp;get&nbsp;key-value&nbsp;info&nbsp;for&nbsp;1st)<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="mgcombocheckboxes-__init__"><strong>__init__</strong></a>(self, topwin, itemkeyval)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="mgcombocheckboxes-grid"><strong>grid</strong></a>(self, row, column)</dt></dl>
+
+<dl><dt><a name="mgcombocheckboxes-mgcombochecks_add"><strong>mgcombochecks_add</strong></a>(self, itemstr)</dt></dl>
+
+<dl><dt><a name="mgcombocheckboxes-mgcombochecks_get"><strong>mgcombochecks_get</strong></a>(self)</dt><dd><tt>#return&nbsp;the&nbsp;KV&nbsp;pairs&nbsp;of&nbsp;the&nbsp;combobuttons&nbsp;true/false&nbsp;checked&nbsp;or&nbsp;not</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="mgmainmenu">class <strong>mgmainmenu</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#mgmainmenu">mgmainmenu</a>(topwin,&nbsp;keyvalcallbacks,&nbsp;keyvalstatevars)<br>
+&nbsp;<br>
+#&nbsp;MG&nbsp;Class&nbsp;for&nbsp;creating&nbsp;and&nbsp;managing&nbsp;a&nbsp;main&nbsp;menu&nbsp;bar&nbsp;with&nbsp;multiple&nbsp;command&nbsp;menus,&nbsp;check&nbsp;menus,&nbsp;radio&nbsp;menus<br>
+#&nbsp;caller&nbsp;must&nbsp;provide<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;'topwin'&nbsp;parent&nbsp;window&nbsp;handle&nbsp;and&nbsp;two&nbsp;keyvalue&nbsp;lists<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;keyvalcallbacks&nbsp;dict&nbsp;with&nbsp;named&nbsp;callbacks&nbsp;for&nbsp;every&nbsp;menu&nbsp;function,<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;keyvalstatevars&nbsp;dict&nbsp;with&nbsp;named&nbsp;variables&nbsp;for&nbsp;every&nbsp;variable&nbsp;menu&nbsp;state<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="mgmainmenu-MGmenudumpdbg"><strong>MGmenudumpdbg</strong></a>(self)</dt><dd><tt>#&nbsp;tutorial&nbsp;dump&nbsp;of&nbsp;the&nbsp;state&nbsp;of&nbsp;the&nbsp;menu&nbsp;vars&nbsp;dictionary</tt></dd></dl>
+
+<dl><dt><a name="mgmainmenu-MGmenugroups_get"><strong>MGmenugroups_get</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="mgmainmenu-__init__"><strong>__init__</strong></a>(self, topwin, keyvalcallbacks, keyvalstatevars)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="mgmainmenu-mgmenuitem_add"><strong>mgmenuitem_add</strong></a>(self, newlabel)</dt><dd><tt>#&nbsp;add&nbsp;a&nbsp;menuitem&nbsp;to&nbsp;the&nbsp;check&nbsp;options&nbsp;in&nbsp;the&nbsp;database&nbsp;selection&nbsp;menu&nbsp;list<br>
+#&nbsp;this&nbsp;option&nbsp;allows&nbsp;the&nbsp;databases&nbsp;to&nbsp;be&nbsp;added&nbsp;as&nbsp;they&nbsp;are&nbsp;specified&nbsp;&amp;&nbsp;scanned&nbsp;by&nbsp;user<br>
+#&nbsp;later&nbsp;used&nbsp;as&nbsp;criteria&nbsp;for&nbsp;which&nbsp;source&nbsp;data&nbsp;to&nbsp;include&nbsp;in&nbsp;the&nbsp;dump&nbsp;of&nbsp;memory&nbsp;database</tt></dd></dl>
+
+<dl><dt><a name="mgmainmenu-mgmenuselection_dumpoptions_get"><strong>mgmenuselection_dumpoptions_get</strong></a>(self)</dt><dd><tt>#&nbsp;get&nbsp;the&nbsp;menu&nbsp;radio&nbsp;selection&nbsp;for&nbsp;including&nbsp;All/Unique/Duplicate&nbsp;files&nbsp;in&nbsp;the&nbsp;dump</tt></dd></dl>
+
+<dl><dt><a name="mgmainmenu-mgmenuselections_dumpget"><strong>mgmenuselections_dumpget</strong></a>(self)</dt><dd><tt>#&nbsp;get&nbsp;the&nbsp;menu&nbsp;selection&nbsp;for&nbsp;which&nbsp;databases&nbsp;to&nbsp;include&nbsp;in&nbsp;the&nbsp;dump</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>DISABLED</strong> = 'disabled'<br>
+<strong>E</strong> = 'e'<br>
+<strong>END</strong> = 'end'<br>
+<strong>LEFT</strong> = 'left'<br>
+<strong>NORMAL</strong> = 'normal'<br>
+<strong>RAISED</strong> = 'raised'<br>
+<strong>RIGHT</strong> = 'right'<br>
+<strong>W</strong> = 'w'<br>
+<strong>Y</strong> = 'y'</td></tr></table>
+</body></html>
