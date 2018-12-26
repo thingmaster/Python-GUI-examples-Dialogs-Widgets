@@ -6,8 +6,9 @@
 #    2018-12-20 add the file menu. add the help menu. 
 #       remove local state vars from these widgets, use keyval pairs provided by caller to store menu & gui state values
 #       added binding example for widgets Enter Leave & flyover callback argument in the class
+#       extended the indirection via keyvaluestatevars to include the dynamic menu options that are added as new databases are scannned
 #
-from tkinter import Tk, OptionMenu, Label, Button, Menu, Menubutton, Checkbutton, Radiobutton, Scrollbar, Text, Entry, StringVar
+from tkinter import Tk, OptionMenu, Label, Button, Menu, Menubutton, Checkbutton, Radiobutton, Scrollbar, Text, Entry, StringVar, BooleanVar
 from tkinter import RAISED, DISABLED, NORMAL, END, RIGHT, LEFT, W, IntVar, BooleanVar, END, W, E, Y
 from tkinter import filedialog
 from tkinter.filedialog import askopenfilename
@@ -60,19 +61,25 @@ class mgmainmenu:
         self.dumpselect_menu.add_radiobutton(label="Dump only unique",value=2,variable=keyvalstatevars['DumpOptions'])
         self.dumpselect_menu.add_radiobutton(label="Dump only Dups",value=3,variable=keyvalstatevars['DumpOptions'])
         self.menubar.add_cascade(label='Dump File options', menu=self.dumpselect_menu)
-        #
-        # add a menubar menu to select All Databases or one database for dumping
-        self.dumpdbselect_menu = Menu(self.menubar)
-        self.dumpdbselectcount = 1
-        self.show_all = IntVar()
-        self.show_all.set(True)
-        self.dbselmenukv = { "Show all":self.show_all}
+
+        self.dumpdbselect_menu1 = Menu(self.menubar)
+        self.menubar.add_cascade(label='Dump DB selection', menu=self.dumpdbselect_menu1)
+        # add a placeholder for this menu with zero databases added in memory
+        # this DUMP DB menu will be dynamically extended as new databases are scanned.
+        #  the parent owner of the class instance must call the add method of this class to extend the menu
+        self.dumpdbselect_menu1.add_command(label="<None>")
+        # <None> is the 0th entry...
+        self.dumpdbselect_menu1.entryconfig(0, state=DISABLED)
+        # set a flag just so we can delete this <None> placeholder during first menu add operation
+        self.newmenu = True
+
         # menu begins with only one  option- dump all
-        self.dumpdbselect_menu.add_checkbutton(label="Show All", onvalue=True, offvalue=False, variable=self.show_all)
-        self.menubar.add_cascade(label='Dump DB selection', menu=self.dumpdbselect_menu)
+        #self.dumpdbselect_menu1.add_checkbutton(label="<None>", onvalue=False, offvalue=False, variable=self.var01)#variable=self.show_all)
 
         #
         # add a menubar menu for the app info Help/ about/ etc
+        self.show_all = IntVar()
+        self.show_all.set(True)
         self.vendorhelp_menu = Menu(self.menubar)
         self.help001 = { "Help":self.show_all}
         # menu begins with only one  option- dump all
@@ -91,23 +98,20 @@ class mgmainmenu:
     # add a menuitem to the check options in the database selection menu list
     # this option allows the databases to be added as they are specified & scanned by user
     # later used as criteria for which source data to include in the dump of memory database
+    # NOTE that the caller MUST extend the @keyvalstatevars[] list to include the newlabel Key-Value pair for this new item with an associated BooleanVar()
+    #   and init the associated variable (I default to False i.e. unchecked)
     def mgmenuitem_add(self, newlabel):
-        newkvint = IntVar()
-        newkvint.set(False)
-        self.dbselmenukv[newlabel] = newkvint
-        self.dumpdbselect_menu.add_checkbutton(label=newlabel, onvalue=True, offvalue=False, variable=newkvint)
-        self.dumpdbselectcount += 1
-
-    # get the menu selection for which databases to include in the dump
-    def mgmenuselections_dumpget(self):
-        return self.dbselmenukv
+        # if this is the first database added, lets remove the <None> menu option!
+        if self.newmenu:
+            self.newmenu = False
+            self.dumpdbselect_menu1.delete(0, END)
+        self.dumpdbselect_menu1.add_checkbutton(label=newlabel, onvalue=True, offvalue=False, variable=self.keyvalstatevars[newlabel])
 
     # get the menu radio selection for including All/Unique/Duplicate files in the dump
-    def mgmenuselection_dumpoptions_get(self):
-        return self.dumpradioval.get()
-
-    def MGmenugroups_get(self):
-        return self.mgmenuselection_dumpoptions_get(), self.mgmenuselections_dumpget()
+    #def mgmenuselection_dumpoptions_get(self):
+    #    return self.dumpradioval.get()  ALL OF THE MENU STATES SHOULD LIE IN PARENT OF THIS INSTANCE! see keyvalstatevars{}
+    # def MGmenugroups_get(self):
+    #   return self.mgmenuselection_dumpoptions_get(), self.keyvalstatevars.it
 
     # tutorial dump of the state of the menu vars dictionary
     def MGmenudumpdbg(self):
@@ -167,13 +171,13 @@ class MGradiogroup():
         self.flyoverfn = flyoverfn
 
         # first radio group; note that command= callback is not needed. add it if you want to process clicks as they happen. my app just gets the state from vars
-        Radiobutton(parentwin, text = "All Files", variable=kvgrouppairs['DumpOptions'],  value = 1).grid(row=12, column=4,sticky=W) #command=self.MGradiogroup_fn,
-        Radiobutton(parentwin, text = "Exclude Dups", variable=kvgrouppairs['DumpOptions'], value=2).grid(row=12, column=5,sticky=W)#command=self.MGradiogroup_fn,
-        Radiobutton(parentwin, text = "Only Dups", variable=kvgrouppairs['DumpOptions'],value=3).grid(row=12,column=6, sticky=W)#command=self.MGradiogroup_fn,
+        Radiobutton(parentwin, text = "All Files", variable=kvgrouppairs['DumpOptions'],  value = 1).grid(row=2, column=4,sticky=W) #command=self.MGradiogroup_fn,
+        Radiobutton(parentwin, text = "Exclude Dups", variable=kvgrouppairs['DumpOptions'], value=2).grid(row=2, column=5,sticky=W)#command=self.MGradiogroup_fn,
+        Radiobutton(parentwin, text = "Only Dups", variable=kvgrouppairs['DumpOptions'],value=3).grid(row=2,column=6, sticky=W)#command=self.MGradiogroup_fn,
         # second radio group
-        Radiobutton(parentwin, text = "All DBs", variable=kvgrouppairs['DBOptions'], value=1).grid(row=13,column=4, sticky=W)
-        Radiobutton(parentwin, text = "Only in selected DB", variable=kvgrouppairs['DBOptions'], value=2).grid(row=13,column=5, sticky=W)
-        Radiobutton(parentwin, text = "Not in selected DB", variable=kvgrouppairs['DBOptions'], value=3).grid(row=13,column=6, sticky=W)
+        Radiobutton(parentwin, text = "All DBs", variable=kvgrouppairs['DBOptions'], value=1).grid(row=3,column=4, sticky=W)
+        Radiobutton(parentwin, text = "Only in selected DB", variable=kvgrouppairs['DBOptions'], value=2).grid(row=3,column=5, sticky=W)
+        Radiobutton(parentwin, text = "Not in selected DB", variable=kvgrouppairs['DBOptions'], value=3).grid(row=3,column=6, sticky=W)
         # third radio group
         #init the db from file or folder  radio button)
         rb1 = Radiobutton(parentwin, text = "Load\nCSV", variable=self.kvgrouppairs['CsvOrLive'], value = 1) #command=self.inittypeFn, 

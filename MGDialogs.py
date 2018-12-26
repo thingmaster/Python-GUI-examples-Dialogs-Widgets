@@ -13,6 +13,7 @@ from tkinter import Tk, OptionMenu, Label, Button, Checkbutton, Radiobutton, Scr
 from tkinter import filedialog
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showerror
+from MGAppInfo import mg_applicationinfo
 
 # basic aboutdialog exits on click of OK
 # 
@@ -29,10 +30,13 @@ class AboutDialog:
         #centerinwindow(top,700, 200)
         top.configure(background='green')
         top.lift()
-        self.myLabel = tk.Label(top, text='    MG File Utilities Version 3.0 2028-12-20    \n ',
+        appinf = mg_applicationinfo()
+        self.myLabel = tk.Label(top, text='    '+
+                                appinf.mg_getappname()+'  '+
+                                appinf.mg_getappversion()+'    \n ',
                                 font='-*-helvetica-*-r-*-*-*-180-*-*-*-*-*-*')
         self.myLabel.grid(column=8, row=1, sticky=W+E)
-        self.myLabel0 = tk.Label(top, text='    Copyright @2018 Michael George')
+        self.myLabel0 = tk.Label(top, text='    '+appinf.mg_getappcopyright())
                                 #font='-*-helvetica-*-r-*-*-*-180-*-*-*-*-*-*')
         self.myLabel0.grid(column=8, row=2, sticky=W+E)
         self.myLabel1 = tk.Label(top, text=' ',
