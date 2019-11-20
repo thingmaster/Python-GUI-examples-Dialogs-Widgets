@@ -1,17 +1,17 @@
-# Copyright @ 2018 Michael George
+# 
+# Copyright @ 2018, 2019 Michael George
 #
-# MGwidgets implements some basic widget classes for reuse
+# MGwidgets implements some basic widget classes for reuse: buttons, boxes, entry, menus
 # revisions:
 #    2018-12-06 mg initial version with main menu and a combo button with list of checkboxes
 #    2018-12-20 add the file menu. add the help menu. 
 #       remove local state vars from these widgets, use keyval pairs provided by caller to store menu & gui state values
 #       added binding example for widgets Enter Leave & flyover callback argument in the class
 #       extended the indirection via keyvaluestatevars to include the dynamic menu options that are added as new databases are scannned
+#    2019-02-23 add the radioubutton to choose copying current tree of unique files to new target OR delete duplicates in current tree of files
 #
 from tkinter import Tk, OptionMenu, Label, Button, Menu, Menubutton, Checkbutton, Radiobutton, Scrollbar, Text, Entry, StringVar, BooleanVar
 from tkinter import RAISED, DISABLED, NORMAL, END, RIGHT, LEFT, W, IntVar, BooleanVar, END, W, E, Y
-from tkinter import filedialog
-from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showerror
 import sys
 
@@ -39,12 +39,17 @@ class mgmainmenu:
         Command_button.menu.entryconfig(0, state=DISABLED)
         Command_button.menu.add_command(label='New...', underline=0, command=keyvalcallbacks["newfilefn"])
         Command_button.menu.add_command(label='Open...', underline=0, command=keyvalcallbacks["openfilefn"])
+        Command_button.menu.add_command(label='ReScan...', underline=0, command=keyvalcallbacks["rescanmenufn"])
         # alternate font example
         Command_button.menu.add_command(label='Print', underline=0,
                                     font='-*-helvetica-*-r-*-*-*-180-*-*-*-*-*-*',
                                     command=keyvalcallbacks["printmenufn"])
         # separator example
         Command_button.menu.add('separator')
+        Command_button.menu.add_command(label='Options', underline=0,
+                                    font='-*-helvetica-*-r-*-*-*-180-*-*-*-*-*-*',
+                                    command=keyvalcallbacks["optionmenufn"])
+
         # aLternate color example
         Command_button.menu.add_command(label='Quit', underline=0,
                                     background='red',
@@ -60,6 +65,11 @@ class mgmainmenu:
         self.dumpselect_menu.add_radiobutton(label="Dump All", value=1,variable=keyvalstatevars['DumpOptions'])
         self.dumpselect_menu.add_radiobutton(label="Dump only unique",value=2,variable=keyvalstatevars['DumpOptions'])
         self.dumpselect_menu.add_radiobutton(label="Dump only Dups",value=3,variable=keyvalstatevars['DumpOptions'])
+        self.dumpselect_menu.add('separator')
+        self.dumpselect_menu.add_command(label='Default header log path', underline=0,
+                                    background='red',
+                                    activebackground='green',
+                                    command=keyvalcallbacks["dumppath1menufn"])
         self.menubar.add_cascade(label='Dump File options', menu=self.dumpselect_menu)
 
         self.dumpdbselect_menu1 = Menu(self.menubar)
@@ -72,6 +82,17 @@ class mgmainmenu:
         self.dumpdbselect_menu1.entryconfig(0, state=DISABLED)
         # set a flag just so we can delete this <None> placeholder during first menu add operation
         self.newmenu = True
+
+        self.dumpvolselect_menu1 = Menu(self.menubar)
+        self.menubar.add_cascade(label='Dump Volume selection', menu=self.dumpvolselect_menu1)
+        # add a placeholder for this menu with zero databases added in memory
+        # this DUMP DB menu will be dynamically extended as new databases are scanned.
+        #  the parent owner of the class instance must call the add method of this class to extend the menu
+        self.dumpvolselect_menu1.add_command(label="<None>")
+        # <None> is the 0th entry...
+        self.dumpvolselect_menu1.entryconfig(0, state=DISABLED)
+        # set a flag just so we can delete this <None> placeholder during first menu add operation
+        self.newvolmenu = True
 
         # menu begins with only one  option- dump all
         #self.dumpdbselect_menu1.add_checkbutton(label="<None>", onvalue=False, offvalue=False, variable=self.var01)#variable=self.show_all)
@@ -88,7 +109,8 @@ class mgmainmenu:
         self.vendorhelp_menu.add_command(label='Help...', underline=0, command=keyvalcallbacks["helpmenufn"])
         # separator example
         self.vendorhelp_menu.add('separator')
-        self.vendorhelp_menu.add_command(label='Dbg...', underline=0, command=self.MGmenudumpdbg)
+        self.vendorhelp_menu.add_command(label='Dbg info dump...', underline=0, command=self.MGmenudumpdbg)
+        self.vendorhelp_menu.add_checkbutton(label='Dbg runtime info@HIGH', onvalue=True, offvalue=False, variable=keyvalstatevars['DebuginfohighFlag'])
         self.vendorhelp_menu.add_command(label='About...', underline=0, command=keyvalcallbacks["aboutmenufn"])
         self.menubar.add_cascade(label='Help', menu=self.vendorhelp_menu)
 
@@ -100,14 +122,23 @@ class mgmainmenu:
     # later used as criteria for which source data to include in the dump of memory database
     # NOTE that the caller MUST extend the @keyvalstatevars[] list to include the newlabel Key-Value pair for this new item with an associated BooleanVar()
     #   and init the associated variable (I default to False i.e. unchecked)
-    def mgmenuitem_add(self, newlabel):
+    def mgmenuitem_adddb(self, newlabel, addseparator=False):
         # if this is the first database added, lets remove the <None> menu option!
         if self.newmenu:
             self.newmenu = False
             self.dumpdbselect_menu1.delete(0, END)
         self.dumpdbselect_menu1.add_checkbutton(label=newlabel, onvalue=True, offvalue=False, variable=self.keyvalstatevars[newlabel])
+        if addseparator:
+            self.dumpdbselect_menu1.add('separator')
 
-    # get the menu radio selection for including All/Unique/Duplicate files in the dump
+    def mgmenuitem_addvol(self, newlabel, addseparator=False):
+        # if this is the first database added, lets remove the <None> menu option!
+        if self.newmenu:
+            self.newmenu = False
+            self.dumpdbselect_menu1.delete(0, END)
+        self.dumpvolselect_menu1.add_checkbutton(label=newlabel, onvalue=True, offvalue=False, variable=self.keyvalstatevars[newlabel])
+        if addseparator:
+            self.dumpvolselect_menu1.add('separator')    # get the menu radio selection for including All/Unique/Duplicate files in the dump
     #def mgmenuselection_dumpoptions_get(self):
     #    return self.dumpradioval.get()  ALL OF THE MENU STATES SHOULD LIE IN PARENT OF THIS INSTANCE! see keyvalstatevars{}
     # def MGmenugroups_get(self):
@@ -174,10 +205,10 @@ class MGradiogroup():
         Radiobutton(parentwin, text = "All Files", variable=kvgrouppairs['DumpOptions'],  value = 1).grid(row=2, column=4,sticky=W) #command=self.MGradiogroup_fn,
         Radiobutton(parentwin, text = "Exclude Dups", variable=kvgrouppairs['DumpOptions'], value=2).grid(row=2, column=5,sticky=W)#command=self.MGradiogroup_fn,
         Radiobutton(parentwin, text = "Only Dups", variable=kvgrouppairs['DumpOptions'],value=3).grid(row=2,column=6, sticky=W)#command=self.MGradiogroup_fn,
-        # second radio group
-        Radiobutton(parentwin, text = "All DBs", variable=kvgrouppairs['DBOptions'], value=1).grid(row=3,column=4, sticky=W)
-        Radiobutton(parentwin, text = "Only in selected DB", variable=kvgrouppairs['DBOptions'], value=2).grid(row=3,column=5, sticky=W)
-        Radiobutton(parentwin, text = "Not in selected DB", variable=kvgrouppairs['DBOptions'], value=3).grid(row=3,column=6, sticky=W)
+        # second radio grou- which databases to operate on
+        Radiobutton(parentwin, text = "All DBs", variable=kvgrouppairs['DBOptions'], value=1).grid(row=4,column=4, sticky=W)
+        Radiobutton(parentwin, text = "Only in selected DB", variable=kvgrouppairs['DBOptions'], value=2).grid(row=4,column=5, sticky=W)
+        Radiobutton(parentwin, text = "Not in selected DB", variable=kvgrouppairs['DBOptions'], value=3).grid(row=4,column=6, sticky=W)
         # third radio group
         #init the db from file or folder  radio button)
         rb1 = Radiobutton(parentwin, text = "Load\nCSV", variable=self.kvgrouppairs['CsvOrLive'], value = 1) #command=self.inittypeFn, 
@@ -190,6 +221,20 @@ class MGradiogroup():
                                                                "  b) you don't have direct access to the backup, or it is very slow network access"))
         rb1.bind("<Leave>",lambda event:self.flyoverfn(None))
         rb2.bind("<Enter>",lambda event:self.flyoverfn("Choose SCAN TREE to load memory database from a target filesystem in the current system\n\n\n"))
+        rb2.bind("<Leave>",lambda event:self.flyoverfn(None))
+
+        # fourth radio group choose to COPY Unique files to a destination or to DELETE dups from a source!
+        #
+        rb1 = Radiobutton(parentwin, text = "Copy unique files", variable=self.kvgrouppairs['DeleteInsteadofCopy'], value = False) #command=self.inittypeFn, 
+        rb1.grid(row=3, column=5,sticky=W)
+        rb2 = Radiobutton(parentwin, text = "Delete DUPs in source", variable=self.kvgrouppairs['DeleteInsteadofCopy'], value = True) #, command=self.inittypeFn
+        rb2.grid(row=3, column=6,sticky=W)
+        rb1.bind("<Enter>",lambda event:self.flyoverfn("Choose Choose COPY to write unique files to a new target folder (i.e. build a NEW, cleaner file tree)\n"+
+                                                               "Choose DELETE to delete duplicate files in a current database (i.e. clean the current files tree\n"+
+                                                               "  a) you don't want to RE-scan your base files which may be huge list and take hours\n"+
+                                                               "  b) you don't have direct access to the backup, or it is very slow network access"))
+        rb1.bind("<Leave>",lambda event:self.flyoverfn(None))
+        rb2.bind("<Enter>",lambda event:self.flyoverfn("Choose DELETE to delete duplicate files in a current database (i.e. clean the current files tree\n\n\n"))
         rb2.bind("<Leave>",lambda event:self.flyoverfn(None))
 
     # anyone with the instance can get the state of the two radio groups. don't really need this either except for tutorial app.
@@ -210,20 +255,20 @@ class MGcheckboxes():
     #  kvgrouppairs is the keyvalue pairs with variables that are associated with the checkbox options
     # example of full implementation in MGGuiUtils.py - see MGradiogroup instantiation
     #
-    def __init__(self, parentwin, kvgrouppairs, flyoverfn):
+    def __init__(self, parentwin, kvgrouppairs, flyoverfn, baserow=6):
         # CSV Generation options check button
         self.master = parentwin
         self.kvgrouppairs = kvgrouppairs
         self.flyoverfn = flyoverfn
 
         # the checkbox gui items to enable / disable various optional activities
-        self.delbutton = Checkbutton(parentwin, text="Delete\nselected", variable=self.kvgrouppairs['DeleteCheck'], onvalue=True, offvalue=False).grid(row=21, column=4, columnspan=1, sticky=W)
-        self.copycheckbutton = Checkbutton(parentwin, text="Copy\nselected", variable=self.kvgrouppairs['CopyCheck'], onvalue=True, offvalue=False).grid(row=21, column=3, columnspan=1, sticky=W)
-        self.printcheckbutton = Checkbutton(parentwin, text="Print CSV recs", variable=self.kvgrouppairs['PrintCheck'], onvalue=True, offvalue=False).grid(row=21, column=2,columnspan=1, sticky=W)
-        self.dupcheckbutton = Checkbutton(parentwin, text="Dup checking", variable=self.kvgrouppairs['DupCheck'], onvalue=True, offvalue=False).grid(row=21, column=1,columnspan=1, sticky=W)
+        self.delbutton = Checkbutton(parentwin, text="Delete\nselected", variable=self.kvgrouppairs['DeleteCheck'], onvalue=True, offvalue=False).grid(row=baserow+15, column=4, columnspan=1, sticky=W)
+        self.copycheckbutton = Checkbutton(parentwin, text="Copy\nselected", variable=self.kvgrouppairs['CopyCheck'], onvalue=True, offvalue=False).grid(row=baserow+15, column=3, columnspan=1, sticky=W)
+        self.printcheckbutton = Checkbutton(parentwin, text="Print CSV recs", variable=self.kvgrouppairs['PrintCheck'], onvalue=True, offvalue=False).grid(row=baserow+15, column=2,columnspan=1, sticky=W)
+        self.dupcheckbutton = Checkbutton(parentwin, text="Dup checking", variable=self.kvgrouppairs['DupCheck'], onvalue=True, offvalue=False).grid(row=baserow+15, column=1,columnspan=1, sticky=W)
         # note that we don't need to keep the handle to the check buttons so they are not instance self.xx variables
         timercheckbutton = Checkbutton(parentwin, text="Timer enable", variable=self.kvgrouppairs['TimerCheck'], onvalue=True, offvalue=False)
-        timercheckbutton.grid(row=21, column=0,columnspan=1, sticky=W)
+        timercheckbutton.grid(row=baserow+15, column=0,columnspan=1, sticky=W)
         timercheckbutton.bind("<Enter>",lambda event:self.flyoverfn("You can turn the timer off so that timer won't monitor insertion/removal automatically\n\n\n"))
         timercheckbutton.bind("<Leave>",self.flyoverfn(None))
 

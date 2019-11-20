@@ -1,17 +1,18 @@
-# Copyright @ 2018 Michael George
+# Copyright @ 2018.2019 Michael George
 #
 # MGAppInfo.py
 #
 # 2018-12-24  mg  application specific strings and identifiers
-#
+# 2019-02-23 mg now includes COPY UNIQUE FILES TO NEW DRIVE or DELETE DUPs ON EXISTING DRIVE
+# 2019-03-31 mg added stats for bl, wl, dirs, exts
 
 class mg_applicationinfo():
     def __init__(self):
         self.appname = 'MG File Utilities'
-        self.appversionstring = 'Version 4.0'
-        self.appcopyright = 'Copyright @ 2018  MICHAEL GEORGE'
-        self.apprev = 4.0
-        self.appdate =  '2018-12-24'
+        self.appversionstring = 'Version 4.32'
+        self.appcopyright = 'Copyright @ 2018, 2019  Michael George'
+        self.apprev = 4.1
+        self.appdate =  '2019-03-31'
 
     def mg_getappversion(self):
         return self.appversionstring
